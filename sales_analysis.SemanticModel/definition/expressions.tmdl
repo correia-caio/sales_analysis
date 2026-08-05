@@ -1,0 +1,29 @@
+expression d_customers_old =
+		let
+		    Fonte = Excel.Workbook(File.Contents("C:\Users\caioc\OneDrive\Documentos\arquivos_drive\portfolio\sales_analysis\data\customers.xlsx"), null, true),
+		    Sheet1_Sheet = Fonte{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"customer_id", Int64.Type}, {"category", type text}, {"city", type text}})
+		in
+		    #"Tipo Alterado"
+	lineageTag: 5b4855dc-838a-410a-8b7b-c383138962d0
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
+expression d_targets =
+		let
+		    Fonte = Excel.Workbook(File.Contents("C:\Users\caioc\OneDrive\Documentos\arquivos_drive\portfolio\sales_analysis\data\targets.xlsx"), null, true),
+		    Sheet1_Sheet = Fonte{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"customer_id", Int64.Type}, {"category", type text}, {"city", type text}, {"monthly revenue target", Int64.Type}}),
+		    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"category", "city"})
+		in
+		    #"Colunas Removidas"
+	lineageTag: b8c5edde-4c11-4d68-856c-c298e591ae14
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

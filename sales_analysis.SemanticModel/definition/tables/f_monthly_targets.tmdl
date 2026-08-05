@@ -1,0 +1,86 @@
+table f_monthly_targets
+	lineageTag: b9a8a498-c997-434f-85c9-64cc36688e80
+
+	column month_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 77d2c186-d639-4ae2-b5d2-9e7d981411b4
+		summarizeBy: none
+		sourceColumn: month_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column monthly_revenue_target
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 4257811b-46e5-4019-b43f-9dff703bd59a
+		summarizeBy: sum
+		sourceColumn: monthly_revenue_target
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b1f91cfb-c505-49cd-a42e-3fd157afb6e8
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = User
+
+	partition f_monthly_targets = m
+		mode: import
+		source = ```
+				let
+				    // 1. Get Start of Month for min and max dates from f_orders
+				    MinOrderDate = Date.StartOfMonth(List.Min(f_orders[order_date])),
+				    MaxOrderDate = Date.StartOfMonth(List.Max(f_orders[order_date])),
+				
+				    // 2. Generate a list of monthly dates (1st day of each month) between Min and Max
+				    MonthlyDatesList = List.Generate(
+				        () => MinOrderDate,
+				        each _ <= MaxOrderDate,
+				        each Date.AddMonths(_, 1)
+				    ),
+				
+				    // 3. Convert the monthly dates list into a table
+				    MonthlyDatesTable = Table.FromList(MonthlyDatesList, Splitter.SplitByNothing(), {"start_of_month_date"}, null, ExtraValues.Error),
+				    SetMonthDateType = Table.TransformColumnTypes(MonthlyDatesTable, {{"start_of_month_date", type date}}),
+				
+				    // 4. Perform a Cross Join with d_targets
+				    CrossJoinTargets = Table.AddColumn(SetMonthDateType, "TargetTable", each d_targets),
+				    
+				    // 5. Expand user_id and monthly revenue target directly from d_targets
+				    ExpandedTargets = Table.ExpandTableColumn(
+				        CrossJoinTargets, 
+				        "TargetTable", 
+				        {"customer_id", "monthly revenue target"}, 
+				        {"customer_id", "monthly_revenue_target"}
+				    ),
+				
+				    // 6. Final reordering and data type transformations
+				    FinalTable = Table.SelectColumns(
+				        ExpandedTargets, 
+				        {"start_of_month_date", "customer_id", "monthly_revenue_target"}
+				    ),
+				    FinalTypes = Table.TransformColumnTypes(
+				        FinalTable, 
+				        {
+				            {"start_of_month_date", type date},
+				            {"customer_id", Int64.Type},
+				            {"monthly_revenue_target", Currency.Type}
+				        }
+				    ),
+				    #"Colunas Renomeadas" = Table.RenameColumns(FinalTypes,{{"start_of_month_date", "month_date"}})
+				in
+				    #"Colunas Renomeadas"
+				```
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

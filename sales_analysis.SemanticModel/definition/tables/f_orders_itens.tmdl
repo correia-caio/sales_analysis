@@ -1,0 +1,53 @@
+table f_orders_itens
+	lineageTag: 0f687a48-74c9-4e56-86a4-0ba0e0d5558d
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5822b551-cde8-44e8-93d2-bc19c69efbac
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 823f9c94-e9db-43a9-98af-89d18eb11330
+		summarizeBy: none
+		sourceColumn: order_date
+
+		variation Variation
+			isDefault
+			relationship: 0a36d873-b271-49f5-b4b8-45d720022399
+			defaultHierarchy: LocalDateTable_9348114b-3d2a-4308-a4c3-91282bef2b36.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 405f743e-4dbb-4437-b017-6dab1e34d7f3
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = User
+
+	partition f_orders_itens = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\caioc\OneDrive\Documentos\arquivos_drive\portfolio\sales_analysis\data\orders.xlsx"), null, true),
+				    orders_Sheet = Fonte{[Item="orders",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(orders_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"order_id", Int64.Type}, {"order_date", type date}, {"customer_id", Int64.Type}, {"product_id", Int64.Type}, {"revenue", type number}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"customer_id", "revenue"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

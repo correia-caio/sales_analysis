@@ -1,0 +1,273 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "8ca9052febc095994db8",
+  "position": {
+    "x": 142.7431421446384,
+    "y": 52.069825436408976,
+    "z": 12001,
+    "height": 567.38154613466327,
+    "width": 1120.3990024937655,
+    "tabOrder": 12001
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "KEY INSIGHTS",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "12pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1- Outlier Distortion & Underlying Revenue Trend",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Monthly Trend Distortion: Total revenue reached an apparent peak in May 2024 (R$ 179k). However, this spike was heavily distorted by a single massive transaction (order_id:7001094602) amounting to R$ 140k (representing ~78% of May's total revenue).",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Underlying Contraction: Excluding this single outlier, baseline revenue experienced a continuous month-over-month decline from January (R$ 115k) down to June (R$ 15k). Baseline revenue only resumed growth in July and peaked in September (R$ 59k), indicating that organic sales momentum was weaker than suggested by headline numbers.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2 - High Customer Concentration Risk (80/20 Pareto)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Extreme Pareto Distribution: Revenue is severely concentrated among a few customer accounts. Out of 8 active customers, the top 2 accounts (user_id: 3333 and 1111) generate almost 89% of total revenue (R$ 602k out of R$ 678k).",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Single Account Dependency: The single largest customer (user_id: 3333) alone accounts for 63% of total company revenue (R$ 431k), posing a significant key-account dependency risk to the business.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3 - Product Portfolio Dominance (Category B)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Volume Dominance: The category B heavily drives operational volume, accounting for 91% of total units sold.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Secondary Categories: Category C represent 7% of sales volume , while  category D and A combined account for less than 1.0% of volume.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "4 - Product Catalog Underutilization (Unsold SKUs)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "High Inactive Portfolio: Out of 314 unique SKUs registered in the product master database (d_items_category), 138 products (43%) recorded zero sales during the analyzed period.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Product Pareto (80/20 Rule): Among the 176 active products, a core group of only 53 SKUs (30% of active catalog) accounts for 80% of total sales volume, highlighting an opportunity for portfolio rationalization and inventory optimization.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "5 - Target Achievement & Goal Misalignment",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Overall Target Gap: Total accumulated YTD revenue (R$ 679k) achieved only 23% of the total YTD revenue target (R$ 2976k) across the 11-month period.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Account Misalignment: Only 1 out of 8 customer accounts (user_id: 7777) reached its cumulative target (142% achievement). Major accounts like user_id: 1111 achieved less than 10% of their allocated target (R$ 170k vs. R$ 1848k target), indicating a severe disconnect in target setting or commercial execution.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "6 - Strategic Recommendations",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Trebuchet MS",
+                      "fontSize": "11pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Target Realignment: Re-evaluate and calibrate commercial monthly targets for large accounts (user_id: 1111) to ensure realistic performance baselines.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Portfolio Optimization: Focus sales push and marketing efforts on the core 53 SKUs while assessing the commercial viability of keeping the 138 unsold items in active inventory.",
+                    "textStyle": {
+                      "fontFamily": "Trebuchet MS"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

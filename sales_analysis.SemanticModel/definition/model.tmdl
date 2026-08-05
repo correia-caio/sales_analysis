@@ -1,0 +1,29 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["d_customers_old","d_customers","f_orders","d_items_category","d_targets","d_calendar","f_orders_itens","_measures","f_monthly_targets"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table d_customers
+ref table f_orders
+ref table DateTableTemplate_f4016389-4777-4ef7-bc54-9bd74fe2a674
+ref table d_items_category
+ref table d_calendar
+ref table f_orders_itens
+ref table LocalDateTable_9348114b-3d2a-4308-a4c3-91282bef2b36
+ref table _measures
+ref table LocalDateTable_bd9ed4e3-e09d-4cab-a1f5-ca98416e4d60
+ref table f_monthly_targets
+ref table d_PAR_revenue_view
+
+ref cultureInfo pt-BR
+

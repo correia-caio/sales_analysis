@@ -1,0 +1,34 @@
+relationship 0a36d873-b271-49f5-b4b8-45d720022399
+	joinOnDateBehavior: datePartOnly
+	fromColumn: f_orders_itens.order_date
+	toColumn: LocalDateTable_9348114b-3d2a-4308-a4c3-91282bef2b36.Date
+
+relationship a011a087-d5c9-8d9f-327a-b8a167518ab9
+	fromColumn: f_orders_itens.order_id
+	toColumn: f_orders.order_id
+
+relationship 029323b9-62ec-2c1e-3894-3931462a3b28
+	fromColumn: f_orders_itens.product_id
+	toColumn: d_items_category.item_id
+
+relationship 655886cb-f8d9-4b6b-a93a-04260563da99
+	joinOnDateBehavior: datePartOnly
+	fromColumn: d_calendar.Date
+	toColumn: LocalDateTable_bd9ed4e3-e09d-4cab-a1f5-ca98416e4d60.Date
+
+relationship aef35493-a207-e576-b3ec-471aec608e36
+	fromColumn: f_orders.order_date
+	toColumn: d_calendar.Date
+
+relationship 4d370a27-e4c3-24a0-979f-0f1c8686b55c
+	fromColumn: f_monthly_targets.month_date
+	toColumn: d_calendar.Date
+
+relationship 3b36d1a5-e76c-f2b9-cb88-5914b37b54b9
+	fromColumn: f_orders.customer_id
+	toColumn: d_customers.customer_id
+
+relationship 9c2425cf-7d47-fc62-59bd-d127679e1dd9
+	fromColumn: f_monthly_targets.customer_id
+	toColumn: d_customers.customer_id
+

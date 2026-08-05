@@ -1,0 +1,48 @@
+table d_PAR_revenue_view
+	lineageTag: 0845f442-05b2-4ce6-b3bf-314d01a1b956
+
+	column p_revenue_view
+		lineageTag: 95f51dc7-ed86-46e5-9a13-aa89048bdadf
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: par_options
+
+		relatedColumnDetails
+			groupByColumn: par_measures
+
+		annotation SummarizationSetBy = Automatic
+
+	column par_measures
+		isHidden
+		lineageTag: cdafdb4a-8e3f-4f00-89db-2a6430d8e8bc
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: par_options
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column par_options
+		isHidden
+		formatString: 0
+		lineageTag: c4382593-a257-415d-9554-8beb54846198
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition d_PAR_revenue_view = calculated
+		mode: import
+		source =
+				{
+				    ("Total Revenue", NAMEOF('_measures'[total_revenue]), 0),
+				    ("% of Total", NAMEOF('_measures'[revenue_%_of_total]), 1)
+				}
+
+	annotation PBI_Id = e6d4b53405944934a40c514c4e2d6e38
+

@@ -1,0 +1,188 @@
+table _measures
+	lineageTag: 55d0c346-30a6-4490-97b1-a4945280ddb9
+
+	measure total_revenue = sum('f_orders'[revenue])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 2d4e4ac4-4d2f-43f2-9159-283de46e334a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure average_ticket = divide([total_revenue],count('f_orders'[order_id]),0)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: fb23c9df-5eed-4f0d-9a05-2b929c136371
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure MoM_growth_% = ```
+			
+			VAR current_month = [total_revenue]
+			VAR previous_month =
+			calculate
+			( 
+			    [total_revenue], 
+			    dateadd( 'd_calendar'[Date], -1, month ) 
+			)
+			return
+			divide(current_month - previous_month, previous_month, 0)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a63ba6f4-2d4a-4a5f-82c6-2da38dcadff4
+
+	measure ytd_revenue = totalytd([total_revenue], 'd_calendar'[Date])
+		lineageTag: 5346dccf-5af4-48da-bc66-e0969e02188b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure top_5_products =
+			
+			calculate
+			(
+			    [total_units_sold],
+			    keepfilters(
+			        topn(
+			            5,
+			            all( 'd_items_category'[item_id] ),
+			            [total_units_sold],
+			            desc
+			        )
+			    )
+			)
+		lineageTag: d218b09e-074f-404b-b916-a1b958552b1a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure total_target = sum('f_monthly_targets'[monthly_revenue_target])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 427ed691-d8bd-4a03-997b-2477e27e3e5c
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure total_units_sold = countrows('f_orders_itens')
+		formatString: 0
+		lineageTag: eb1cce08-5d6f-4b5e-970d-c9f0511537a2
+
+	measure users_hitting_target_% = ```
+			
+			var total_users = countrows('d_customers')
+			var users_meeting_target = 
+			sumx
+			(
+			    'd_customers',
+			    if([total_revenue] >= [total_target], 1, 0)
+			)
+			return
+			divide( users_meeting_target, total_users, 0 )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8399922c-9f5e-4eeb-93d2-b61893f1d568
+
+	measure target_achievement_% = divide([total_revenue],[total_target],0)
+		formatString: 0%;-0%;0%
+		lineageTag: f2589c1f-7e93-4c83-bf87-0b98cfb5a16f
+
+	measure total_orders = COUNTROWS(f_orders)
+		formatString: 0
+		lineageTag: 4f31d147-429e-4a46-b6c5-48adf01321a5
+
+	measure revenue_%_of_total =
+			
+			DIVIDE(
+			    [total_revenue],
+			    CALCULATE( [total_revenue], ALLSELECTED( 'f_orders' ) ),
+			    0
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: e58f0cd0-4656-4b8f-97f6-c5037f402697
+
+	measure category_cumulative_units_% = ```
+			
+			VAR _CurrentCategorySales = [total_units_sold]
+			VAR _TotalAllCategories = CALCULATE( [total_units_sold], ALLSELECTED( 'd_items_category'[category] ) )
+			VAR _CumulativeSales = 
+			    CALCULATE(
+			        [total_units_sold],
+			        FILTER(
+			            ALLSELECTED( 'd_items_category'[category] ),
+			            [total_units_sold] >= _CurrentCategorySales
+			        )
+			    )
+			RETURN
+			DIVIDE( _CumulativeSales, _TotalAllCategories, 0 )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8486c9aa-9e5c-4263-b20a-5a78942125b4
+
+	measure category_pareto_class = ```
+			
+			IF(
+			    ISBLANK( [total_units_sold] ),
+			    BLANK(),
+			    IF( [category_cumulative_units_%] <= 0.80, "Core Category (80%+)", "Secondary Category" )
+			)
+			
+			```
+		lineageTag: 4336804c-9a1a-44a9-9ae0-f3f7b14954d2
+
+	measure unsold_products_count =
+			
+			CALCULATE(
+			    COUNTROWS( 'd_items_category' ),
+			    FILTER(
+			        'd_items_category',
+			        ISBLANK( [total_units_sold] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 27a7a9d2-2a61-42e7-849f-d785106f3a14
+
+	measure unsold_products_% =
+			
+			VAR _TotalCatalogItems = COUNTROWS( ALL( 'd_items_category' ) )
+			RETURN
+			DIVIDE( [unsold_products_count], _TotalCatalogItems, 0 )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b3af5da4-fff0-4a30-8a04-27796357cf33
+
+	measure avg_items_per_order =
+			
+			DIVIDE(
+			    COUNTROWS( 'f_orders_itens' ),
+			    DISTINCTCOUNT( 'f_orders'[order_id] ),
+			    0
+			)
+		lineageTag: d8d25f2f-781b-47f9-af4c-bccc3c022024
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure customer_cumulative_revenue_% = ```
+			
+			VAR _CurrentCustomerRev = [total_revenue]
+			VAR _TotalAllCustomers = CALCULATE( [total_revenue], ALLSELECTED( 'd_customers'[customer_id] ) )
+			VAR _CumulativeRevenue = 
+			    CALCULATE(
+			        [total_revenue],
+			        FILTER(
+			            ALLSELECTED( 'd_customers'[customer_id] ),
+			            [total_revenue] >= _CurrentCustomerRev
+			        )
+			    )
+			RETURN
+			DIVIDE( _CumulativeRevenue, _TotalAllCustomers, 0 )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 22591db9-d32d-4f73-ac83-18fc9bcf8108
+
+	partition _measures = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

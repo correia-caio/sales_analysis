@@ -1,0 +1,90 @@
+table d_calendar
+	lineageTag: 1afe567c-9827-427b-8ec7-795c9277d59b
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d44b6afb-12e5-49d6-b7e2-1aaf962c16fb
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 655886cb-f8d9-4b6b-a93a-04260563da99
+			defaultHierarchy: LocalDateTable_bd9ed4e3-e09d-4cab-a1f5-ca98416e4d60.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ed643c9-f8c2-4d4a-be4c-e6261c635241
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 1cdd72d9-8080-403c-80de-5253fe8fc756
+		summarizeBy: sum
+		sourceColumn: month_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column year/month
+		dataType: string
+		lineageTag: 9c7e0309-0dd5-4d5e-953e-35b3081d45ff
+		summarizeBy: none
+		sourceColumn: year/month
+		sortByColumn: year_month_sort
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month_sort
+		dataType: int64
+		formatString: 0
+		lineageTag: 97e3446e-6871-47cd-9607-d30c8eb06328
+		summarizeBy: sum
+		sourceColumn: year_month_sort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition d_calendar = m
+		mode: import
+		source =
+				let
+				    // 1. Get the minimum and maximum date from the order_date column in f_orders
+				    MinDate = Date.From("2024-01-01"),
+				    MaxDate = Date.From(List.Max(f_orders[order_date])),
+				
+				    // 2. Calculate the total number of days between both dates
+				    DaysCount = Duration.Days(MaxDate - MinDate) + 1,
+				
+				    // 3. Generate a continuous list of dates
+				    DateList = List.Dates(MinDate, DaysCount, #duration(1, 0, 0, 0)),
+				
+				    // 4. Convert the list to a table
+				    DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}, null, ExtraValues.Error),
+				
+				    // 5. Change column type to Date
+				    SetDateType = Table.TransformColumnTypes(DateTable, {{"Date", type date}}),
+				
+				    // 6. Add auxiliary columns
+				    AddYear = Table.AddColumn(SetDateType, "year", each Date.Year([Date]), Int64.Type),
+				    AddMonthNum = Table.AddColumn(AddYear, "month_number", each Date.Month([Date]), Int64.Type),
+				    AddYearMonth = Table.AddColumn(AddMonthNum, "year/month", each Text.From(Date.Year([Date])) & "/" & Text.PadStart(Text.From(Date.Month([Date])), 2, "0")),
+				    AddYearMonthSort = Table.AddColumn(AddYearMonth, "year_month_sort", each ([year] * 100) + [month_number], Int64.Type),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(AddYearMonthSort,{{"year/month", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

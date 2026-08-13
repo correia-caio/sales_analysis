@@ -1,9 +1,9 @@
 # Sales Analysis
 This repository contains an end-to-end Power BI business intelligence project built on transactional order data, targets, customer profiles, and product catalogs. 
-The project demonstrates analytics capabilities —from Star Schema modeling and Power Query ETL to advanced DAX measurement, dynamic interactive visuals, and executive insights.
+The project demonstrates analytics capabilities - from Star Schema modeling and Power Query ETL to advanced DAX measurement, dynamic interactive visuals, and executive insights.
 
 ## Project Objective
-Design and deploy an executive-level solution following modeling principles. The dashboard delivers interactive data storytelling, allowing key decision-makers to track revenue growth, monitor order behavior (Average Ticket), evaluate target achievement and perform dynamic visual toggle comparisons between absolute financial values and percentage contributions.
+Design and deploy an executive-level solution built on dashboard design and visual storytelling best practices. The dashboard delivers interactive data storytelling, allowing key decision-makers to track revenue growth, monitor order behavior, evaluate target achievement, and perform dynamic visual toggle comparisons.
 
 ## Data Model
 
